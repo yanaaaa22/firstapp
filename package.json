@@ -1,1 +1,16 @@
-{"name":"monster-brew","version":"1.0.0","private":true,"scripts":{"start":"python3 -m http.server 3000 --bind 0.0.0.0","check":"node --check app.js"}}
+{
+  "name": "monster-brew",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 3000 --bind 0.0.0.0",
+    "check": "node --check app.js && node --check data.js && node --check monster-art.js",
+    "test": "node --test tests/data.test.cjs",
+    "test:browser": "node --test tests/browser.test.cjs",
+    "format:check": "prettier --check index.html app.js data.js monster-art.js style.css tests/*.cjs README.md package.json"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1",
+    "prettier": "3.6.2"
+  }
+}

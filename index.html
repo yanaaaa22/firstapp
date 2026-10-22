@@ -1,5 +1,187 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Чудо-котёл — мастерская монстриков</title><link rel="stylesheet" href="style.css"></head>
-<body><header><a class="brand" href="./">✳ <span>Чудо-котёл<small>МАСТЕРСКАЯ МОНСТРИКОВ</small></span></a><button id="sound" class="quiet" aria-pressed="false">♫ Звук выключен</button></header>
-<main><section id="home" class="screen"><div class="eyebrow">ЩЕПОТКА МАГИИ, МНОГО ХАРАКТЕРА</div><h1>Маленькое чудо.<br><em>Твоего сочинения.</em></h1><p class="intro">Смешивай находки, открывай монстриков<br>и придумывай им совершенно особенный стиль.</p><button id="play" class="primary">Начать колдовать <span>↗</span></button><button id="resume" class="quiet" hidden>В гости к моему монстрику →</button><div class="hero-art"><span class="orbit o1">✦</span><span class="orbit o2">🌿</span><span class="orbit o3">✧</span><div id="hero-monster"></div><div class="art-note">Каждый немножко чудной.<br>Каждый — единственный.</div></div><div class="home-footer"><span>01 / СОЗДАЙ</span><span>02 / НАРЯДИ</span><span>03 / ПОДРУЖИСЬ</span></div></section>
-<section id="game" class="screen" hidden><div class="steps"><span id="step1">01 · Зельеварение</span><i></i><span id="step2">02 · Гардероб</span><i></i><span id="step3">03 · Знакомство</span></div><div class="game-heading"><div class="eyebrow" id="stage-label"></div><h1 id="stage-title"></h1><p id="stage-description"></p></div><div class="workbench"><aside id="left-panel" class="panel"></aside><div class="stage"><div class="stage-stars">✧ <span>✦</span> ✧</div><div id="actor"></div><div class="platform"></div><div id="bubble" role="status" aria-live="polite"></div></div><aside id="right-panel" class="panel"></aside></div><div id="actions" class="actions"></div><button id="back-home" class="quiet back">← На главную</button></section></main><footer>СДЕЛАНО ИЗ ВООБРАЖЕНИЯ <span>✦</span> Здесь можно быть чудным</footer><script src="app.js"></script></body></html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#7050c6" />
+    <meta
+      name="description"
+      content="Вари волшебные зелья, открывай 20 необычных монстриков и посели их в собственной сказочной деревне."
+    />
+    <title>Чудо-котёл · Долина чудиков</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Ctext y='.9em' font-size='70'%3E🔮%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="data.js"></script>
+    <script defer src="monster-art.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="./" aria-label="Чудо-котёл, главная"
+          ><span class="brand-icon">✦</span
+          ><span
+            >Чудо<span class="brand-bottom"
+              >котёл<span class="tiny-star">✧</span></span
+            ></span
+          ></a
+        >
+        <div class="sidebar-caption">МАЛЕНЬКИЙ МИР БОЛЬШОЙ МАГИИ</div>
+        <nav aria-label="Игровые разделы">
+          <button class="nav-item active" data-nav="village">
+            <span>🏡</span>Моя деревня<i></i></button
+          ><button class="nav-item" data-nav="brew">
+            <span>🫧</span>Волшебный котёл</button
+          ><button class="nav-item" data-nav="collection">
+            <span>📖</span>Книга чудиков<b id="collection-count"
+              >1/20</b
+            ></button
+          ><button class="nav-item" data-nav="wardrobe">
+            <span>🎀</span>Гардероб</button
+          ><button class="nav-item" data-nav="passport">
+            <span>💌</span>Паспорта
+          </button>
+        </nav>
+        <div class="sidebar-sticker">
+          <div class="sticker-stars">✧ ✦ ✧</div>
+          <span>Немножко странные.<br />Очень твои.</span>
+          <div id="sticker-monster"></div>
+        </div>
+        <button id="sound" class="sound-button" aria-pressed="false">
+          ♫ <span>Звук выключен</span>
+        </button>
+        <div class="autosave" id="save-status">
+          ● Мир сохраняется автоматически
+        </div>
+      </aside>
+      <div class="content">
+        <header class="topbar">
+          <div class="breadcrumb">Твоя маленькая вселенная <span>✦</span></div>
+          <div class="resources">
+            <span class="resource" title="Собирай цветы и дари друзьям"
+              >🌸 <b id="flowers-count">12</b><small>цветочков</small></span
+            ><span class="resource lavender" title="Разные открытые виды"
+              >✦ <b id="species-count">1</b><small>/ 20 чудиков</small></span
+            ><button id="help" class="help-button" aria-label="Как играть">
+              ?
+            </button>
+          </div>
+        </header>
+        <main>
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">ДОБРО ПОЖАЛОВАТЬ ДОМОЙ</div>
+              <h1>Долина чудиков<span>✦</span></h1>
+              <p>Здесь из щепотки магии рождается большая дружба.</p>
+            </div>
+            <button class="primary new-monster" data-nav="brew">
+              <span>＋</span> Наколдовать друга
+            </button>
+          </div>
+          <section class="village-layout" aria-label="Твоя волшебная деревня">
+            <div class="world-wrap">
+              <div class="world-top">
+                <span class="world-badge"><i></i> В деревне всегда чудесно</span
+                ><button id="celebrate" class="world-badge celebration">
+                  ✧ Устроить праздник
+                </button>
+              </div>
+              <div
+                id="world"
+                class="world"
+                aria-label="Мир монстриков. Выбери жителя и нажми на поляну, чтобы он пошёл туда."
+              >
+                <img
+                  class="world-art"
+                  src="world.svg"
+                  alt="Сказочная деревня: грибные домики, бирюзовая река, радужный мост и цветочная поляна"
+                  draggable="false"
+                />
+                <div class="world-sparkles" aria-hidden="true">
+                  <i>✦</i><i>✧</i><i>✦</i><i>✧</i><i>✦</i>
+                </div>
+                <button
+                  class="landmark cauldron-house"
+                  data-nav="brew"
+                  aria-label="Открыть волшебный котёл"
+                >
+                  <span>🫧</span><b>Чудо-котёл</b></button
+                ><button class="landmark garden-house" id="garden">
+                  <span>🌷</span><b>Цветочная поляна</b>
+                </button>
+                <div id="ingredient-pickups"></div>
+                <div id="residents-layer"></div>
+                <div id="world-effects" aria-hidden="true"></div>
+              </div>
+              <div class="world-bottom">
+                <span
+                  ><i class="live-dot"></i><b id="population-count">1 житель</b
+                  ><span class="map-hint">
+                    · Нажми на поляну, чтобы прогуляться</span
+                  ></span
+                ><span>☀ Время для волшебства</span>
+              </div>
+            </div>
+            <aside class="world-rail">
+              <button class="brew-card" data-nav="brew">
+                <span class="card-kicker">ЛАБОРАТОРИЯ ЧУДЕС</span>
+                <div class="mini-cauldron" aria-hidden="true">
+                  <span>✦</span><i>✧</i><b>🫧</b>
+                  <div>✶</div>
+                </div>
+                <strong>А кто живёт в твоём котле?</strong>
+                <p>Смешай 3 находки —<br />и познакомься с новым другом!</p>
+                <span class="card-button">Добавить щепотку магии ↗</span>
+              </button>
+              <div class="wish-card">
+                <span class="card-kicker">МАЛЕНЬКИЕ РАДОСТИ</span>
+                <h2>Сегодня можно…</h2>
+                <div id="wishes"></div>
+                <div class="wish-note">Никуда не спешим. Просто живём ♡</div>
+              </div>
+            </aside>
+          </section>
+          <section class="residents-section" aria-labelledby="residents-title">
+            <div class="section-heading">
+              <h2 id="residents-title">
+                Твои чудесные жители <span id="resident-total">1</span>
+              </h2>
+              <button class="text-button" data-nav="collection">
+                Все 20 видов <span>↗</span>
+              </button>
+            </div>
+            <div id="resident-cards" class="resident-cards"></div>
+          </section>
+          <section
+            id="resident-controls"
+            class="resident-controls"
+            aria-label="Управление выбранным монстриком"
+          ></section>
+          <div class="page-footer">
+            <span>СОТКАНО ИЗ МАГИИ, ЗУБОВ И ОБНИМАШЕК</span
+            ><span>✦ У каждого чуда свой характер</span>
+          </div>
+        </main>
+      </div>
+    </div>
+    <dialog id="modal" aria-labelledby="modal-title">
+      <div class="dialog-header">
+        <div>
+          <span class="eyebrow" id="modal-kicker"></span>
+          <h2 id="modal-title"></h2>
+        </div>
+        <button id="close-modal" class="close-button" aria-label="Закрыть окно">
+          ×
+        </button>
+      </div>
+      <div id="modal-body"></div>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script>
+      /* All game logic is local; no account required. */
+    </script>
+  </body>
+</html>
